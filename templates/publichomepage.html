@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block content %}
+
+<!-- Category Listings Section -->	
+<div class="col-xs-3 bg-success border-dark">
+	<h2>Categories</h2>
+	{% for c in categories %}
+	<a href="{{url_for('showCategory', category_name = c.name )}}">{{c.name}}</a>
+	</br>
+{% endfor %}
+</div>
+
+<!-- Lastest Ads Posted Section -->
+<div class="col-xs-9 bg-primary">
+	<h2>Latest Ads</h2>
+</div>
+
+{% endblock %}

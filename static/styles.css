@@ -1,0 +1,11 @@
+/* Containers */
+
+.body_container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+	color: #2d3c49;
+}

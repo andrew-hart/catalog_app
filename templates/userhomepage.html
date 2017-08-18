@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+{% block content %}
+		
+<!-- User profile banner -->
+<div clas="userbanner">
+	<h5>Welcome {{user.name}}</h5>
+	<a href="{{url_for('showMyAds', user_id=user.id)}}">My Ad's</a>
+
+</div>
+
+<!-- Lastest Ads Banner -->
+<div class="latestads">
+	<h3>Latest Ads</h3>
+	<span class=displayhoriz>
+	{% for l in lastest_ads%}
+	<p>{{l.name}}</p>
+	</span>
+	{% endfor %}
+</div>
+
+<!-- Category Listings Section -->
+<h3>Categories</h3>
+{% for c in categories %}
+<div>
+	<a href="{{url_for('showCategory', category_name=c.name )}}">{{c.name}}</a>
+	</br>
+
+</div>
+
+{% endfor %}
+{% endblock %}

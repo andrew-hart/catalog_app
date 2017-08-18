@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title> BuyNSell </title>
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='styles.css') }}"> 
+	</head>
+	
+	<body>
+		
+		<div class="container-fluid">
+
+			<!-- Header -->	
+			<div class="row bg-danger">
+				<h1><a href="{{url_for('showAllCategories')}}">BuyNSell</a></h1>
+				<h3>Buy and sell anything and everything</h3>
+			</div>
+
+
+			<!-- Banner -->
+			<div class="row bg-light min-hegiht-10"></div>	
+
+
+			<!-- Individual page content goes here -->	
+			<div class="row bg-light">
+				{% block content %}
+				{% endblock %}
+			</div>
+
+			<!-- Footer -->
+			<div class="row sticky-bottom bg-danger text-center">
+				<h5>Created by Andrew Hart</h5>
+			</div>
+
+		</div>
+
+	</body>
+</html>

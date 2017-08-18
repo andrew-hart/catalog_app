@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block content %}
+		
+<h1>{{user.name}}'s Ad's</h1>
+
+{% for a in ads %}
+
+<div>
+
+<P>{{a.name}}</P>
+<P>{{a.description}}</P>
+<P>{{a.price}}</P>
+<P>{{a.category.name}}</P>
+</br>
+
+</div>
+
+{% endfor %}
+{% endblock %}

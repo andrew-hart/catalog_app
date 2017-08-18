@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% block content %}
+
+<h1>Are you sure you want to delete?</h1>
+
+<form action="{{ url_for('deleteAd', user_id=user_id, ad_id=ad_id, ad=adToDelete)}}" method="post">
+
+<input type="submit" name="Delete">
+	
+
+</form>
+
+<a href="{{url_for('showMyAds', user_id = user_id)}}">Cancel</a>
+
+{% endblock %}
