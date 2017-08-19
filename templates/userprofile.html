@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="col-xs-4 bg-light"></div>
+
+<div class="col-xs-4 bg-success border img-rounded">
+
+	<h1 class="text-center">My Profile</h1>
+
+	<div class="text-center">
+		<h4>Name: {{user.name}}</h4>
+		</br>
+		<h4>Email: {{user.email}}</h4>
+		</br>
+		<h4>Picture: {{user.picture}}</h4>
+		</br>
+
+	</div>
+
+</div>
+
+<div class="col-xs-4 bg-light"></div>
+
+{% endblock %}

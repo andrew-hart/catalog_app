@@ -1,9 +1,22 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Ad
+from flask import session as login_session
+import random, string
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import FlowExchangeError
+import httplib2
+import json
+from flask import make_response
+import requests 
 
 app = Flask(__name__)
+
+#Declare client ID
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "cat-e-log"
 
 # Connect to database and create database session
 engine = create_engine('sqlite:///catelog.db')
@@ -13,7 +26,12 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Route for the login page
-# @app.route('/login')
+@app.route('/login')
+def showLogin():
+	state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+					for x in xrange(32))
+	login_session['state'] = state
+	return render_template('login.html', STATE=state)
 
 # Route for the homepage
 @app.route('/')
@@ -31,19 +49,25 @@ def showMyHomepage(user_id):
 	return render_template('userhomepage.html', user=user, latest_ads=latest_ads,
 	 categories=categories)
 
+# Route for the user profile
+@app.route('/catelog/profile/<int:user_id>')
+def showMyProfile(user_id): 
+	user = session.query(User).filter_by(id=user_id)
+	return render_template('userprofile.html', user=user)
+
 # Route for showCategory function
 @app.route('/catelog/<string:category_name>')
 def showCategory(category_name):
 	ads = session.query(Ad).filter_by(category = 
 		session.query(Category).filter_by(name = category_name).one()).all()
-	return render_template('showads.html', category_name = category_name, ads = ads)
+	return render_template('showcategory.html', category_name=category_name, ads=ads)
 
 # Route for showMyAds function
 @app.route('/catelog/<int:user_id>/ads')
 def showMyAds(user_id):
 	user = session.query(User).filter_by(id = user_id).one()
 	ads = session.query(Ad).filter_by(user_id = user_id).all()
-	return render_template('showmyads.html', user = user, ads = ads)
+	return render_template('showmyads.html', user=user, ads=ads)
 
 # Route for newAd function
 @app.route('/catelog/<int:user_id>/new', methods=['GET', 'POST'])
@@ -100,5 +124,6 @@ def deleteAd(user_id, ad_id):
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+	app.secret_key = 'super_secret_key'
+	app.debug = True
+	app.run(host='0.0.0.0', port=5000)

@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="col-xs-4 bg-light"></div>
+
+<div class="col-xs-4 bg-success border img-rounded">
+
+	<div class="card bg-success rounded img-rounded">
+		<div class="card-body">
+			<h2 class="card-title text-center">Welcome to cat-e-log!</h2>
+			<h4 class="card-text text-center">Login</h4>
+			</br>
+
+		</div>
+	</div>
+
+	 <div id="signInButton" class="text-center">
+          <span class="g-signin"
+            data-scope="openid email"
+            data-clientid="187737445387-qhl5ch5bhg25fh28m4epdu2dlh5cd6l0.apps.googleusercontent.com"
+            data-redirecturi="postmessage"
+            data-accesstype="offline"
+            data-cookiepolicy="single_host_origin"
+            data-callback="signInCallback"
+            data-approvalprompt="force">
+          </span>
+        </div>
+
+    <div id=result></div>
+
+    <script>
+function signInCallback(authResult) {
+  if (authResult['code']) {
+    
+    $('#signinButton').attr('style', 'display: none');
+    
+    $.ajax({
+      type: 'POST',
+      url: '/gconnect?state={{STATE}}',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+         setTimeout(function() {
+          window.location.href = "/catelog";
+         }, 4000);
+          
+      } else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+      
+  }); } }
+</script>
+
+
+</div>
+
+<div class="col-xs-4 bg-light"></div>
+
+{% endblock %}
