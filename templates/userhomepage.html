@@ -1,31 +1,61 @@
-{% extends "main.html" %}
+{% extends "mainuser.html" %}
 {% block content %}
+
+<!-- Category Listings Section -->	
+<div class="col-xs-3 background-color border-dark">
+	
+	<div class="category-container">
+		<h2>Categories</h2>
+		</br></br>
+		{% for c in categories %}
+		<a class="btn header-color btn-block left-block" href="{{url_for('showCategory', category_name = c.name )}}" role="button">{{c.name}}</a>
+		{% endfor %}
+		</br>
+	</div>
+
+	<!--
+	<div class="category-container text-left">
+		</br>
+		<h2>Post an Ad</h2>
+		<a class="btn card-color btn-large btn-block" href="{{url_for('newAd', user_id=user.id)}}" role="button">New Ad</a>
+		</br>
 		
-<!-- User profile banner -->
-<div clas="userbanner">
-	<h5>Welcome {{user.name}}</h5>
-	<a href="{{url_for('showMyAds', user_id=user.id)}}">My Ad's</a>
+	</div>
+	-->
 
 </div>
 
-<!-- Lastest Ads Banner -->
-<div class="latestads">
-	<h3>Latest Ads</h3>
-	<span class=displayhoriz>
-	{% for l in lastest_ads%}
-	<p>{{l.name}}</p>
-	</span>
-	{% endfor %}
+<!-- Lastest Ads Posted Section -->
+<div class="col-xs-9 background-color img-rounded">
+	
+<!--
+	<div class="background-color text-center">
+		</br>
+		<a class="btn btn-warning btn-large" href="{{url_for('newAd', user_id=user.id)}}" role="button">Post a new Ad</a>
+		</br>
+		
+	</div>
+
+-->
+	<div class="text-center">
+		<h2>Latest Ads</h2>
+		</br>
+		{% for a in latest_ads%}
+		<div class="card card-color card-container rounded img-rounded">
+			<div class="card-body text-center">
+				<h3 class="card-title header-color img-rounded">{{a.name}}</h3>
+				<P class="card-text">Category: {{a.category.name}}</P>
+				<P class="card-text">Price: ${{a.price}}</P>
+				<P class="card-text">Description: {{a.description}}</P>
+				<P class="card-text text-center">Posted By: {{a.user.name}}</P>
+				</br>
+			</div>	
+		</div>
+		</br></br>
+		{% endfor %}
+	</div>
+
 </div>
+</br>
 
-<!-- Category Listings Section -->
-<h3>Categories</h3>
-{% for c in categories %}
-<div>
-	<a href="{{url_for('showCategory', category_name=c.name )}}">{{c.name}}</a>
-	</br>
-
-</div>
-
-{% endfor %}
 {% endblock %}

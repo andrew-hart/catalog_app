@@ -1,39 +1,52 @@
-{% extends "main.html" %}
+{% extends "mainuser.html" %}
 {% block content %}
 
 <div class="col-xs-4 bg-light"></div>
 
-<div class="col-xs-4 bg-success border img-rounded">
-
-	<h1 class="text-center">New Ad</h1>
-	
-
-	<form action="{{ url_for('newAd', user_id=user_id)}}" method='post'>
-
-		<p>Name:</p>
-			<input type='text' size='60' name='name'>
-			</br>
-
-		<p>Category:</p>
-			<input type='text' size='60' name='category'>
-
-		<p>Price:</p>
-			<input type='text' size='60' name='price'>
-			</br>
-
-		<p>Description:</p>
-			<input type='text' size='60' name='description'>
-			</br>
-
-		</br></br>
-
-	<input class ="btn btn-primary btn-block center-block" type='submit' value = 'Create'>
-	</br>
-	<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
+<div class="col-xs-4">
 
 	</br></br>
 
-	</form>
+	<div class="card-color img-rounded text-center">
+
+		</br>
+		<h3 class="header-color text-center img-rounded form-padding">New Ad</h3>
+		
+
+		<form action="{{ url_for('newAd', user_id=user_id)}}" method='post'>
+
+			</br>
+			<p>Name:</p>
+				<input type='text' size='50' name='name'>
+				</br></br>
+
+			<p>Category:</p>
+				<input type='text' size='50' name='category'>
+				</br></br>
+
+			<p>Price:</p>
+				<input type='text' size='50' name='price'>
+				</br></br>
+
+			<p>Description:</p>
+				<input type='text' size='50' name='description'>
+				</br>
+
+			</br></br>
+
+		<div class="form-padding">
+
+			<input class ="btn btn-warning btn-block center-block" type='submit' value = 'Create'>
+			</br>
+			<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
+
+		</div>
+
+		</br></br>
+
+		</form>
+
+	</div>
 
 </div>
 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title> cat-e-log </title>
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" type=text/css href="{{ url_for('static', filename='styles.css') }}"> 
+
+		<!-- Pre-requistisites for google sign-in -->
+   		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  		</script>
+		<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+	</head>
+	
+	<body>
+		
+		<div class="container-fluid bg-color">
+
+			<!-- Individual page content goes here -->	
+
+			<!--	
+			<nav class="navbar narbar-light header-color text-left">
+				<h1><a id="side_padding" href="{{url_for('showMyHomepage')}}">cat-e-log</a></h1>
+				<div class="text-right profile_padding">
+					<h5>Welcome {{user.name}}</h5>
+										<a class="btn btn-success btn-large text-right" href="{{url_for('showMyProfile', user_id=user.id)}}" role="button">My Profile</a>
+					<a class="btn btn-danger btn-large text-right" href="{{url_for('gdisconnect')}}" role="button">Log Out</a>
+					
+
+					<a href="{{url_for('showMyProfile', user_id=user.id)}}">
+						<img src="{{ url_for('static', filename='user_icon.png')}}" width=45 height="45">
+					</a>
+					<a href="{{url_for('gdisconnect')}}">
+						<img src="{{ url_for('static', filename='logout_icon.png')}}" width=45 height="45">
+					</a>
+				</div>
+			</nav>
+			-->
+
+			<nav class="navbar narbar-light header-color header-container">
+
+					<div class="logo-container">
+						<h1><a href="{{url_for('showMyHomepage')}}">cat-e-log</a></h1>
+						<h5 class="text-left">Welcome {{user.name}}</h5>
+					</div>
+					
+					<div class="icon-container">
+						<a class="btn card-color btn-large" href="{{url_for('newAd', user_id=user.id)}}" role="button">Post an Ad</a>
+						<a class="btn btn-success btn-large text-right" href="{{url_for('showMyProfile', user_id=user.id)}}" role="button">My Profile</a>
+						<a class="btn btn-danger btn-large text-right" href="{{url_for('gdisconnect')}}" role="button">Log Out</a>
+					
+				</div>
+			</nav>
+
+				
+			<!-- Individual page content goes here -->	
+			<div class="row bg-light">
+				{% block content %}
+				{% endblock %}
+			</div>
+
+		</div>
+
+	</body>
+</html>

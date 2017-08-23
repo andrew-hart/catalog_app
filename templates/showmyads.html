@@ -1,32 +1,43 @@
-{% extends "main.html" %}
+{% extends "mainuser.html" %}
 {% block content %}
 
-<div class="col-xs-4 bg-light"></div>
+<div class="col-xs-4 bg-color"></div>
 
-<div class="col-xs-4 bg-success border img-rounded">
-		
-	<h1 class="text-center">My Ad's</h1>
+<div class="col-xs-4 bg-color border">
 
-	{% for a in ads %}
+	</br></br>	
+	<div class="header-color img-rounded">
 
-	<div class="card bg-primary rounded img-rounded">
-		<div class="card-body">
-			<h3 class="card-title">{{a.name}}</h3>
-			<P class="card-text">Category: {{a.category.name}}</P>
-			<P class="card-text">Price: ${{a.price}}</P>
-			<P class="card-text">Description: {{a.description}}</P>
-			<div class="text-center">
-				<a class="btn btn-warning" href="{{url_for('editAd', user_id=a.user_id, ad_id=a.id)}}" role="button">Edit</a>
-				<a class="btn btn-danger" href="{{url_for('deleteAd', user_id=a.user_id, ad_id=a.id)}}" role="button">Delete</a>
-		 	</div>
-			</br>
+		</br>
+		<h3 class="text-center card-color img-rounded card-padding">My Ad's</h3>
 
+		{% for a in ads %}
+
+		<div class="card card-color card-container rounded img-rounded">
+			<div class="card-body card-padding">
+				</br>
+				<h3 class="card-title text-center header-color img-rounded">{{a.name}}</h3>
+				<P class="card-text">Category: {{a.category.name}}</P>
+				<P class="card-text">Price: ${{a.price}}</P>
+				<P class="card-text">Description: {{a.description}}</P>
+				<div class="text-center">
+					<a class="btn header-color" href="{{url_for('editAd', user_id=a.user_id, ad_id=a.id)}}" role="button">Edit</a>
+					<a class="btn btn-danger" href="{{url_for('deleteAd', user_id=a.user_id, ad_id=a.id)}}" role="button">Delete</a>
+			 	</div>
+				</br>
+
+			</div>
 		</div>
-	</div>
 
-	{% endfor %}
+		{% endfor %}
+
+		</br></br>
+
+	</div>	
+
+	</br></br>
 
 </div>
 
-<div class="col-xs-4 bg-light"></div>
+<div class="col-xs-4 bg-color"></div>
 {% endblock %}

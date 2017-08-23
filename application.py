@@ -106,6 +106,12 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Check to see if the user exists, if they don't make a new one
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+    	user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
     output = ''
     output += '<h3>Welcome, '
     output += login_session['username']
@@ -148,21 +154,24 @@ def gdisconnect():
 @app.route('/catelog')
 def showAllCategories():
 	categories = session.query(Category).order_by(asc(Category.name))
-	return render_template('publichomepage.html', categories=categories, user_name=login_session['username'])
+	latest_ads = session.query(Ad).order_by(asc(Ad.id)).limit(5).all()
+	return render_template('publichomepage.html', categories=categories, 
+		latest_ads=latest_ads)
 
 # Route for the user homepage
-@app.route('/catelog/<int:user_id>')
-def showMyHomepage(user_id):
-	user = session.query(User).filter_by(id=user_id)
+@app.route('/catelog/user')
+def showMyHomepage():
+	user = session.query(User).filter_by(id=login_session['user_id']).one()
 	latest_ads = session.query(Ad).order_by(Ad.id).limit(3).all()
 	categories = session.query(Category).order_by(asc(Category.name))
-	return render_template('userhomepage.html', user=user, latest_ads=latest_ads,
-	 categories=categories)
+	return render_template('userhomepage.html', user=user,
+		categories=categories, latest_ads=latest_ads)
 
 # Route for the user profile
 @app.route('/catelog/profile/<int:user_id>')
 def showMyProfile(user_id): 
-	user = session.query(User).filter_by(id=user_id)
+	#user = session.query(User).filter_by(id=user_id)
+	user = getUserInfo(user_id)
 	return render_template('userprofile.html', user=user)
 
 # Route for showCategory function
@@ -182,6 +191,7 @@ def showMyAds(user_id):
 # Route for newAd function
 @app.route('/catelog/<int:user_id>/new', methods=['GET', 'POST'])
 def newAd(user_id):
+	user = getUserInfo(user_id)
 	if request.method == 'POST':
 		newAd = Ad(name = request.form['name'], description = 
 			request.form['description'], price = request.form['price'],
@@ -190,13 +200,14 @@ def newAd(user_id):
 			user = session.query(User).filter_by(id = user_id).one())
 		session.add(newAd)
 		session.commit()
-		return redirect(url_for('showAllCategories'))
+		return redirect(url_for('showMyAds', user_id=user.id))
 	else: 
-		return render_template('newad.html', user_id=user_id)
+		return render_template('newad.html', user_id=user_id, user=user)
 
 # Route for editAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/edit', methods = ['GET', 'POST'])
 def editAd(user_id, ad_id):
+	user = getUserInfo(user_id)
 	editedAd = session.query(Ad).filter_by(id=ad_id).one()
 	if request.method == 'POST':
 		# Update ad name
@@ -217,11 +228,12 @@ def editAd(user_id, ad_id):
 
 	else:
 		return render_template('editad.html', user_id=user_id, ad_id=ad_id,
-		 ad=editedAd)
+		 ad=editedAd, user=user)
 
 # Route for deleteAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/delete', methods =['GET', 'POST'])
 def deleteAd(user_id, ad_id):
+	user = getUserInfo(user_id)
 	adToDelete = session.query(Ad).filter_by(id=ad_id).one()
 	if request.method == 'POST':
 		session.delete(adToDelete)
@@ -230,8 +242,30 @@ def deleteAd(user_id, ad_id):
 
 	else:
 		return render_template('deletead.html', user_id=user_id, ad_id=ad_id,
-			ad=adToDelete)
+			ad=adToDelete, user=user)
 
+# Function to create a new user
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+                   'email'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    print 'User created'
+    return user.id
+
+# Function to get a user object
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+# Function to get a user id
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 if __name__ == '__main__':
 	app.secret_key = 'super_secret_key'

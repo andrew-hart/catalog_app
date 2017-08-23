@@ -1,23 +1,73 @@
-{% extends "main.html" %}
+{% extends "mainuser.html" %}
 {% block content %}
 
 <div class="col-xs-4 bg-light"></div>
 
-<div class="col-xs-4 bg-success border img-rounded">
+<div class="col-xs-4">
 
-	<h1 class="text-center">My Profile</h1>
+	</br></br>
 
-	<div class="text-center">
-		<h4>Name: {{user.name}}</h4>
+	<div class="card-color img-rounded text-center">
+
 		</br>
-		<h4>Email: {{user.email}}</h4>
-		</br>
-		<h4>Picture: {{user.picture}}</h4>
+		<h3 class="header-color text-center img-rounded form-padding">My Profile</h3>
+		
+		<div class="text-center">
+			</br>
+			<h4>Name: {{user.name}}</h4>
+			</br></br>
+			<h4>Email: {{user.email}}</h4>
+			</br></br>
+			<h4>Picture: {{user.picture}}</h4>
+			</br></br>
+
+		</div>
+
+		<div class="form-padding">
+			<a class="btn header-color btn-large btn-block" href="{{url_for('showMyAds', user_id=user.id)}}" role="button">See my Ads</a>
+			</br>
+			<a class="btn header-color btn-large btn-block" href="{{url_for('newAd', user_id=user.id)}}" role="button">Post new Ad</a>
+
+
+		</div>
+
 		</br>
 
 	</div>
 
+		</br></br>
+
+	</div>
+
 </div>
+
+
+<!--
+
+<div class="col-xs-4 text-center">
+
+	<div class="profile-container card-color img-rounded">
+
+		</br></br>
+		<h1>My Profile</h1>
+
+		<div class="text-center">
+			</br></br>
+			<h4>Name: {{user.name}}</h4>
+			</br></br>
+			<h4>Email: {{user.email}}</h4>
+			</br></br>
+			<h4>Picture: {{user.picture}}</h4>
+			</br></br>
+			<a class="btn header-color btn-large" href="{{url_for('showMyAds', user_id=user.id)}}" role="button">My Ads</a>
+
+		</div>
+		</br>
+	</div>
+
+</div>
+
+-->
 
 <div class="col-xs-4 bg-light"></div>
 

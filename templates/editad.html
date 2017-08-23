@@ -1,33 +1,80 @@
-{% extends "main.html" %}
+{% extends "mainuser.html" %}
 {% block content %}
 
 <div class="col-xs-4 bg-light"></div>
 
-<div class="col-xs-4 bg-success border img-rounded">
+<div class="col-xs-4">
 
-	<h1 class="text-center">Edit</h1>
+	</br></br>
 
-	<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
+	<div class="card-color img-rounded text-center">
 
-		<p>Name:</p><input type="text" size="60" name="name" placeholder="{{ad.name}}">
+		</br>
+		<h3 class="header-color text-center img-rounded form-padding">Edit Ad</h3>
+		
 
-		<p>Category:</p><input type="text" size="60" name="category" placeholder="{{ad.category.name}}">
+		<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
 
-		<p>Price:</p><input type="text" size="60" name="price" placeholder="{{ad.price}}">
+			</br>
+			<p>Name:</p><input type="text" size="50" name="name" placeholder="{{ad.name}}">
+			</br></br>
 
-		<p>Descripion:</p><input type="text" size="60" name="description" placeholder="{{ad.description}}">
+			<p>Category:</p><input type="text" size="50" name="category" placeholder="{{ad.category.name}}">
+			</br></br>
+
+			<p>Price:</p><input type="text" size="50" name="price" placeholder="{{ad.price}}">
+			</br></br>
+
+			<p>Descripion:</p><input type="text" size="50" name="description" placeholder="{{ad.description}}">
+			<br>
+
+			</br></br>
+
+		<div class="form-padding">
+
+			<input class="btn btn-warning btn-block center-block" type="submit" name="Edit">
+			<br>
+			<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
+
+		</div>
 
 		</br></br>
-	
-	<input class="btn btn-primary btn-block center-block" type="submit" name="Edit">
-	<br>
-	<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
-	
-	</br><br>
 
-	</form>
+		</form>
+
+	</div>
 
 </div>
+
+<!--
+
+<div class="col-xs-4 bg-success border img-rounded">
+
+		<h1 class="text-center">Edit</h1>
+
+		<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
+
+			<p>Name:</p><input type="text" size="60" name="name" placeholder="{{ad.name}}">
+
+			<p>Category:</p><input type="text" size="60" name="category" placeholder="{{ad.category.name}}">
+
+			<p>Price:</p><input type="text" size="60" name="price" placeholder="{{ad.price}}">
+
+			<p>Descripion:</p><input type="text" size="60" name="description" placeholder="{{ad.description}}">
+
+			</br></br>
+		
+		<input class="btn btn-primary btn-block center-block" type="submit" name="Edit">
+		<br>
+		<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
+		
+		</br><br>
+
+		</form>
+
+</div>
+
+-->
 
 <div class="col-xs-4 bg-light"></div>
 

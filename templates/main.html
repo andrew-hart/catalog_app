@@ -17,23 +17,24 @@
 	
 	<body>
 		
-		<div class="container-fluid">
+		<div class="container-fluid bg-color">
 
-			<!-- Header -->	
-			<div class="row bg-primary text-right">
-				<h1><a class="bg-primary" href="{{url_for('showAllCategories')}}">cat-e-log</a></h1>
-				<h5>Online store for anything and everything</h5>
-			</div>
+			<nav class="navbar narbar-light header-color header-container">
+				<div class="logo-container">
+					<h1><a href="{{url_for('showAllCategories')}}">cat-e-log</a></h1>
+				</div>
+				
+				<div class="icon-container">
+					<a class="btn card-color btn-large" href="{{url_for('showLogin')}}" role="button">Login</a>		
+					</a>
+				</div>
+			</nav>
 
+				
 			<!-- Individual page content goes here -->	
 			<div class="row bg-light">
 				{% block content %}
 				{% endblock %}
-			</div>
-
-			<!-- Footer -->
-			<div class="row sticky-bottom bg-primary text-center">
-				<h5>Created by Andrew Hart</h5>
 			</div>
 
 		</div>
