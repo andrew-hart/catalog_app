@@ -149,18 +149,20 @@ def gdisconnect():
         del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        print 'Logout successful'
+        return redirect('/catelog')
     else:
         response = make_response(json.dumps('Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
-        return response
+        print 'Logout failed'
+        return redirect('/catelog')
 
 # Route for the homepage
 @app.route('/')
 @app.route('/catelog')
 def showAllCategories():
 	categories = session.query(Category).order_by(asc(Category.name))
-	latest_ads = session.query(Ad).order_by(asc(Ad.id)).limit(5).all()
+	latest_ads = session.query(Ad).order_by(Ad.id.desc()).limit(3)
 	return render_template('publichomepage.html', categories=categories, 
 		latest_ads=latest_ads)
 
@@ -170,7 +172,7 @@ def showMyHomepage():
 	if 'username' not in login_session:
 		return redirect('/login')
 	user = session.query(User).filter_by(id=login_session['user_id']).one()
-	latest_ads = session.query(Ad).order_by(Ad.id).limit(3).all()
+	latest_ads = session.query(Ad).order_by(Ad.id.desc()).limit(3)
 	categories = session.query(Category).order_by(asc(Category.name))
 	return render_template('userhomepage.html', user=user,
 		categories=categories, latest_ads=latest_ads)
@@ -187,23 +189,36 @@ def showMyProfile(user_id):
 @app.route('/catelog/<string:category_name>')
 def showCategory(category_name):
 	ads = session.query(Ad).filter_by(category = 
-		session.query(Category).filter_by(name = category_name).one()).all()
-	return render_template('showcategory.html', category_name=category_name, ads=ads)
+		session.query(Category).filter_by(name = category_name).one()
+		).order_by(Ad.id.desc()).all()
+	if 'username' not in login_session:
+		return render_template('showcategory.html', category_name=category_name, ads=ads)
+	else:
+		user = getUserInfo(login_session['user_id'])
+		return render_template('usershowcategory.html', category_name=category_name, ads=ads, user=user)
 
 # Route for showMyAds function
 @app.route('/catelog/<int:user_id>/ads')
 def showMyAds(user_id):
+	# Make sure the user is logged in first
 	if 'username' not in login_session:
 		return redirect('/login')
+	# Make sure the user is the owner first
+	if login_session['user_id'] != user_id:
+		return redirect('/catelog')
 	user = session.query(User).filter_by(id = user_id).one()
-	ads = session.query(Ad).filter_by(user_id = user_id).all()
+	ads = session.query(Ad).filter_by(user_id = user_id).order_by(Ad.id.desc()).all()
 	return render_template('showmyads.html', user=user, ads=ads)
 
 # Route for newAd function
 @app.route('/catelog/<int:user_id>/new', methods=['GET', 'POST'])
 def newAd(user_id):
+	# Make sure the user is logged in first
 	if 'username' not in login_session:
 		return redirect('/login')
+	# Make sure the user is the owner first
+	if login_session['user_id'] != user_id:
+		return redirect('/catelog')
 	user = getUserInfo(user_id)
 	if request.method == 'POST':
 		newAd = Ad(name = request.form['name'], description = 
@@ -213,14 +228,19 @@ def newAd(user_id):
 			user = session.query(User).filter_by(id = user_id).one())
 		session.add(newAd)
 		session.commit()
+		return render_template('showmyads.html', user=user, ads=ads)
 	else: 
 		return render_template('newad.html', user_id=user_id, user=user)
 
 # Route for editAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/edit', methods = ['GET', 'POST'])
 def editAd(user_id, ad_id):
+	# Make sure the user is logged in first
 	if 'username' not in login_session:
 		return redirect('/login')
+	# Make sure the user is the owner first
+	if login_session['user_id'] != user_id:
+		return redirect('/catelog')
 	user = getUserInfo(user_id)
 	editedAd = session.query(Ad).filter_by(id=ad_id).one()
 	if request.method == 'POST':
@@ -247,8 +267,12 @@ def editAd(user_id, ad_id):
 # Route for deleteAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/delete', methods =['GET', 'POST'])
 def deleteAd(user_id, ad_id):
+	# Make sure the user is logged in first
 	if 'username' not in login_session:
 		return redirect('/login')
+	# Make sure the user is the owner first
+	if login_session['user_id'] != user_id:
+		return redirect('/catelog')
 	user = getUserInfo(user_id)
 	adToDelete = session.query(Ad).filter_by(id=ad_id).one()
 	if request.method == 'POST':

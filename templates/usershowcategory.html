@@ -1,0 +1,42 @@
+{% extends "mainuser.html" %}
+{% block content %}
+
+<div class="col-xs-4 bg-light"></div>
+
+<div class="col-xs-4 bg-color border">
+
+	</br></br>	
+	<div class="header-color img-rounded">
+
+		</br>
+		<h3 class="text-center card-color img-rounded card-padding">{{category_name}}</h3>
+
+		{% for a in ads %}
+
+		<div class="card card-color card-container rounded img-rounded">
+			<div class="card-body card-padding">
+				</br>
+				<h3 class="card-title text-center header-color img-rounded">{{a.name}}</h3>
+				<P class="card-text text-center ">Category: {{a.category.name}}</P>
+				<P class="card-text text-center ">Price: ${{a.price}}</P>
+				<P class="card-text text-center ">Description: {{a.description}}</P>
+				<P class="card-text text-center">Posted By: {{a.user.name}}</P>
+				</br>
+				</br>
+
+			</div>
+		</div>
+
+		{% endfor %}
+
+		</br></br>
+
+	</div>	
+
+	</br></br>
+
+</div>
+
+<div class="col-xs-4 bg-light"></div>
+
+{% endblock %}
