@@ -220,6 +220,8 @@ def newAd(user_id):
 	if login_session['user_id'] != user_id:
 		return redirect('/catelog')
 	user = getUserInfo(user_id)
+	ads = session.query(Ad).filter_by(user_id = user_id).order_by(Ad.id.desc()).all()
+	categories = session.query(Category).order_by(asc(Category.name))
 	if request.method == 'POST':
 		newAd = Ad(name = request.form['name'], description = 
 			request.form['description'], price = request.form['price'],
@@ -228,9 +230,11 @@ def newAd(user_id):
 			user = session.query(User).filter_by(id = user_id).one())
 		session.add(newAd)
 		session.commit()
+		ads = session.query(Ad).filter_by(user_id = user_id).order_by(Ad.id.desc()).all()
 		return render_template('showmyads.html', user=user, ads=ads)
 	else: 
-		return render_template('newad.html', user_id=user_id, user=user)
+		return render_template('newad.html', user_id=user_id, user=user, 
+			categories=categories)
 
 # Route for editAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/edit', methods = ['GET', 'POST'])
@@ -242,6 +246,7 @@ def editAd(user_id, ad_id):
 	if login_session['user_id'] != user_id:
 		return redirect('/catelog')
 	user = getUserInfo(user_id)
+	categories = session.query(Category).order_by(asc(Category.name))
 	editedAd = session.query(Ad).filter_by(id=ad_id).one()
 	if request.method == 'POST':
 		# Update ad name
@@ -262,7 +267,7 @@ def editAd(user_id, ad_id):
 
 	else:
 		return render_template('editad.html', user_id=user_id, ad_id=ad_id,
-		 ad=editedAd, user=user)
+		 ad=editedAd, user=user, categories=categories)
 
 # Route for deleteAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/delete', methods =['GET', 'POST'])

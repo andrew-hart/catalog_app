@@ -16,11 +16,18 @@
 		<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
 
 			</br>
-			<p>Name:</p><input type="text" size="50" name="name" placeholder="{{ad.name}}">
-			</br></br>
-
+			<!--
+			<p>Category:</p>	
+				<select name='category'>
+					{% for c in categories%}
+					<option value="{{c.name}}">{{c.name}}</option>
+					{% endfor %}
+				</select-->
 			<p>Category:</p><input type="text" size="50" name="category" placeholder="{{ad.category.name}}">
 			</br></br>
+
+			<p>Name:</p><input type="text" size="50" name="name" placeholder="{{ad.name}}">
+			</br></br>			
 
 			<p>Price:</p><input type="text" size="50" name="price" placeholder="{{ad.price}}">
 			</br></br>

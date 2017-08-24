@@ -16,12 +16,16 @@
 		<form action="{{ url_for('newAd', user_id=user_id)}}" method='post'>
 
 			</br>
+			<p>Category:</p>	
+				<select name='category'>
+					{% for c in categories%}
+					<option value="{{c.name}}">{{c.name}}</option>
+					{% endfor %}
+				</select>
+			</br></br>
+
 			<p>Name:</p>
 				<input type='text' size='50' name='name'>
-				</br></br>
-
-			<p>Category:</p>
-				<input type='text' size='50' name='category'>
 				</br></br>
 
 			<p>Price:</p>
