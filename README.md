@@ -2,7 +2,7 @@
 Cat-e-log is a fictional online marketplace where people can post items for sale. This project was used as a learning experience to get an understanding of what building a web application entails, from database to front end. The database `catelog` is a mock database of a fictional online marketplace, containing three tables `users`,`ad` and `categories`. Users can publiclly view the ads posted on Cat-e-log, with each ad containing a `name`, `price` and `description` along with the correspinding `category` in which the ad is listed under. Users can also create a profile which gives them the ability to `post` ads themselves (and `edit` and `delete`). To do so users must have a google account, as this is the only way to sign in. Please note the app is meant to for desktops online, and the UI is best viewed with viewport of 1200px of larger. The next version will be responsive and meant for all devices. 
 
 # Requirements 
-The requirements for this project are as follows:
+The requirements for this project are as follows:  
 -Virtual Box  
 -Vagrant  
 -Python `2.7.13`  
