@@ -3,10 +3,10 @@ Cat-e-log is a fictional online marketplace where people can post items for sale
 
 # Requirements 
 The requirements for this project are as follows:
--Virtual Box
--Vagrant
--Python `2.7.13`
--PostgreSQL `2.7.3`
+-Virtual Box  
+-Vagrant  
+-Python `2.7.13`  
+-PostgreSQL `2.7.3`  
 
 # Setting up the Project
 1. Install VirtualBox and Vagrant.
