@@ -16,15 +16,22 @@
 		<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
 
 			</br>
-			<!--
 			<p>Category:</p>	
 				<select name='category'>
-					{% for c in categories%}
-					<option value="{{c.name}}">{{c.name}}</option>
-					{% endfor %}
-				</select-->
+					<option value="{{ad.category.name}}">{{ad.category.name}}</option>
+					<option value="Art and Collectables">Art and Collectables</option>
+					<option value="Clothes">Clothes</option>
+					<option value="Electronics">Electronics</option>
+					<option value="Furnature">Furnature</option>
+					<option value="Jewellery and Watches">Jewellery and Watches</option>
+					<option value="Sports">Sports</option>
+					<option value="Tools">Tools</option>
+					<option value="Toys and Games">Toys and Games</option>
+				</select>
+			<!--
 			<p>Category:</p><input type="text" size="50" name="category" placeholder="{{ad.category.name}}">
 			</br></br>
+			-->
 
 			<p>Name:</p><input type="text" size="50" name="name" placeholder="{{ad.name}}">
 			</br></br>			
@@ -52,36 +59,6 @@
 	</div>
 
 </div>
-
-<!--
-
-<div class="col-xs-4 bg-success border img-rounded">
-
-		<h1 class="text-center">Edit</h1>
-
-		<form action ="{{url_for('editAd', user_id = user_id, ad_id = ad_id, ad = editedAd)}}" method = 'post'>
-
-			<p>Name:</p><input type="text" size="60" name="name" placeholder="{{ad.name}}">
-
-			<p>Category:</p><input type="text" size="60" name="category" placeholder="{{ad.category.name}}">
-
-			<p>Price:</p><input type="text" size="60" name="price" placeholder="{{ad.price}}">
-
-			<p>Descripion:</p><input type="text" size="60" name="description" placeholder="{{ad.description}}">
-
-			</br></br>
-		
-		<input class="btn btn-primary btn-block center-block" type="submit" name="Edit">
-		<br>
-		<a class="btn btn-danger center-block" href="{{url_for('showMyAds', user_id = user_id)}}" role="button">Cancel</a>
-		
-		</br><br>
-
-		</form>
-
-</div>
-
--->
 
 <div class="col-xs-4 bg-light"></div>
 
