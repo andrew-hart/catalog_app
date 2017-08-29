@@ -5,8 +5,7 @@ import httplib2
 import json
 from flask import make_response
 import requests
-from flask import Flask, render_template, request, redirect, url_for,
-jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Ad
@@ -40,7 +39,8 @@ def adJSON(ad_id):
 @app.route('/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32)) login_session['state'] = state
+                    for x in xrange(32))
+    login_session['state'] = state
     return render_template('login.html', STATE=state)
 
 
@@ -144,8 +144,7 @@ def gdisconnect():
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'
-    % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'% login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
