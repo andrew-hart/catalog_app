@@ -1,11 +1,12 @@
-#!/usr/bin/env python
+#!/#!/usr/bin/env python
 import random
 import string
 import httplib2
 import json
 from flask import make_response
 import requests
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request
+from flask import redirect, url_for, jsonify, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Ad
@@ -144,7 +145,7 @@ def gdisconnect():
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s'% login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
@@ -195,8 +196,8 @@ def showMyHomepage():
 def showMyProfile(user_id):
     if 'username' not in login_session:
         return redirect('/login')
-        user = getUserInfo(user_id)
-        return render_template('userprofile.html', user=user)
+    user = getUserInfo(user_id)
+    return render_template('userprofile.html', user=user)
 
 
 # Route for showCategory function
@@ -238,30 +239,30 @@ def newAd(user_id):
     # Make sure the user is logged in first
     if 'username' not in login_session:
         return redirect('/login')
-        # Make sure the user is the owner first
-        if login_session['user_id'] != user_id:
-            return redirect('/catelog')
-            user = getUserInfo(user_id)
-            ads = session.query(Ad).filter_by(
-                                              user_id=user_id).order_by(
-                                              Ad.id.desc()).all()
-            categories = session.query(Category).order_by(asc(Category.name))
-        if request.method == 'POST':
-            newAd = Ad(name=request.form['name'],
-                       description=request.form['description'],
-                       price=request.form['price'],
-                       category=session.query(Category).filter_by(
-                       name=request.form['category']).one(),
-                       user=session.query(User).filter_by(id=user_id).one())
-            session.add(newAd)
-            session.commit()
-            ads = session.query(Ad).filter_by(
-                                              user_id=user_id).order_by(
-                                              Ad.id.desc()).all()
-            return render_template('showmyads.html', user=user, ads=ads)
-        else:
-            return render_template('newad.html', user_id=user_id, user=user,
-                                   categories=categories)
+    # Make sure the user is the owner first
+    if login_session['user_id'] != user_id:
+        return redirect('/catelog')
+        user = getUserInfo(user_id)
+        ads = session.query(Ad).filter_by(
+                                          user_id=user_id).order_by(
+                                          Ad.id.desc()).all()
+        categories = session.query(Category).order_by(asc(Category.name))
+    if request.method == 'POST':
+        newAd = Ad(name=request.form['name'],
+                   description=request.form['description'],
+                   price=request.form['price'],
+                   category=session.query(Category).filter_by(
+                   name=request.form['category']).one(),
+                   user=session.query(User).filter_by(id=user_id).one())
+        session.add(newAd)
+        session.commit()
+        ads = session.query(Ad).filter_by(
+                                           user_id=user_id).order_by(
+                                           Ad.id.desc()).all()
+        return render_template('showmyads.html', user=user, ads=ads)
+    else:
+        return render_template('newad.html', user_id=user_id, user=user,
+                               categories=categories)
 
 
 # Route for editAd function
