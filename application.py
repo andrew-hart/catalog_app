@@ -145,7 +145,7 @@ def gdisconnect():
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
@@ -184,11 +184,11 @@ def showAllCategories():
 def showMyHomepage():
     if 'username' not in login_session:
         return redirect('/login')
-        user = session.query(User).filter_by(id=login_session['user_id']).one()
-        latest_ads = session.query(Ad).order_by(Ad.id.desc()).limit(3)
-        categories = session.query(Category).order_by(asc(Category.name))
-        return render_template('userhomepage.html', user=user,
-                               categories=categories, latest_ads=latest_ads)
+    user = session.query(User).filter_by(id=login_session['user_id']).one()
+    latest_ads = session.query(Ad).order_by(Ad.id.desc()).limit(3)
+    categories = session.query(Category).order_by(asc(Category.name))
+    return render_template('userhomepage.html', user=user,
+                           categories=categories, latest_ads=latest_ads)
 
 
 # Route for the user profile
@@ -219,34 +219,28 @@ def showCategory(category_name):
 
 # Route for showMyAds function
 @app.route('/catelog/<int:user_id>/ads')
+@login_required
 def showMyAds(user_id):
-    # Make sure the user is logged in first
-    if 'username' not in login_session:
-        return redirect('/login')
-    # Make sure the user is the owner first
+    # Make sure the user is authorized
     if login_session['user_id'] != user_id:
         return redirect('/catelog')
-        user = session.query(User).filter_by(id=user_id).one()
-        ads = session.query(Ad).filter_by(
-                                          user_id=user_id).order_by(
-                                          Ad.id.desc()).all()
-        return render_template('showmyads.html', user=user, ads=ads)
+    user = session.query(User).filter_by(id=user_id).one()
+    ads = session.query(Ad).filter_by(user_id=user_id).order_by(
+                                      Ad.id.desc()).all()
+    return render_template('showmyads.html', user=user, ads=ads)
 
 
 # Route for newAd function
 @app.route('/catelog/<int:user_id>/new', methods=['GET', 'POST'])
+@login_required
 def newAd(user_id):
-    # Make sure the user is logged in first
-    if 'username' not in login_session:
-        return redirect('/login')
-    # Make sure the user is the owner first
+    # Make sure the user is authorized
     if login_session['user_id'] != user_id:
         return redirect('/catelog')
-        user = getUserInfo(user_id)
-        ads = session.query(Ad).filter_by(
-                                          user_id=user_id).order_by(
-                                          Ad.id.desc()).all()
-        categories = session.query(Category).order_by(asc(Category.name))
+    user = getUserInfo(user_id)
+    ads = session.query(Ad).filter_by(user_id=user_id).order_by(
+                                      Ad.id.desc()).all()
+    categories = session.query(Category).order_by(asc(Category.name))
     if request.method == 'POST':
         newAd = Ad(name=request.form['name'],
                    description=request.form['description'],
@@ -267,11 +261,9 @@ def newAd(user_id):
 
 # Route for editAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/edit', methods=['GET', 'POST'])
+@login_required
 def editAd(user_id, ad_id):
-    # Make sure the user is logged in first
-    if 'username' not in login_session:
-        return redirect('/login')
-    # Make sure the user is the owner first
+    # Make sure the user is authorized
     if login_session['user_id'] != user_id:
         return redirect('/catelog')
     user = getUserInfo(user_id)
@@ -302,11 +294,9 @@ def editAd(user_id, ad_id):
 # Route for deleteAd function
 @app.route('/catelog/<int:user_id>/<int:ad_id>/delete',
            methods=['GET', 'POST'])
+@login_required
 def deleteAd(user_id, ad_id):
-    # Make sure the user is logged in first
-    if 'username' not in login_session:
-        return redirect('/login')
-        # Make sure the user is the owner first
+    # Make sure the user is the owner first
     if login_session['user_id'] != user_id:
         return redirect('/catelog')
         user = getUserInfo(user_id)
@@ -318,6 +308,17 @@ def deleteAd(user_id, ad_id):
     else:
         return render_template('deletead.html', user_id=user_id,
                                ad_id=ad_id, ad=adToDelete, user=user)
+
+
+# Function decorator to check if user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            return redirect('/login')
+    return decorated_function
 
 
 # Function to create a new user
