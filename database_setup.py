@@ -29,7 +29,7 @@ class Ad(Base):
     description = Column(String(250))
     price = Column(String(8))
     category_id = Column(Integer, ForeignKey('category.id'))
-    category = relationship(Category)
+    category = relationship(Category, cascade="all, delete-orphan")
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     
